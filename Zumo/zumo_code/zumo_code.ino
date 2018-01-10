@@ -6,7 +6,7 @@
 
 #define trigPin 2
 #define echoPin 3
-#define SENSOR_THRESHOLD 300
+#define SENSOR_THRESHOLD 200
 
 ZumoBuzzer buzzer;
 ZumoReflectanceSensorArray reflectanceSensors;
@@ -20,13 +20,27 @@ int j = 0;
 enum runType { automatic, manual, pause}; 
 enum runType active;
 
+bool connected = false;
 
 void setup()
 {
   Serial.begin(9600);
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
+  //trouble connecting to gui now, method to check connection needed.
+  connectToGUI();
   calibrate();
+}
+
+void connectToGUI(){
+  
+  while(!connected) {
+    char input = Serial.read();
+    if(input == '@') {
+      connected = true;
+    }
+    delay(100);
+  }
 }
 
 void calibrate(){
@@ -52,9 +66,9 @@ void calibrate(){
   motors.setSpeeds(0,0);
   digitalWrite(13, LOW);
   buzzer.play(">g32>>c32");
+  Serial.println("Calibrated");
   button.waitForButton();
   buzzer.play("L16 cdegreg4");
-  Serial.println("Calibrated");
 }
 
 void forward() {
@@ -62,13 +76,14 @@ void forward() {
   motors.setRightSpeed(speed);
 }
 
-void left(){
-  motors.setLeftSpeed(-speed*2);
-  motors.setRightSpeed(speed*2);
-}
 void back(){
   motors.setLeftSpeed(-speed);
   motors.setRightSpeed(-speed);
+}
+
+void left(){
+  motors.setLeftSpeed(-speed*2);
+  motors.setRightSpeed(speed*2);
 }
 
 void right(){
@@ -89,38 +104,20 @@ void avoidObstacle(){
   motors.setRightSpeed(0);
 }
 
-//void y(){
-//   motors.setLeftSpeed (speed- (speed *0.75));
-//  motors.setRightSpeed(speed); 
+//bool checkForObstacle(){
+//  long duration, distance;
+//  digitalWrite(trigPin, LOW);
+//  delayMicroseconds(2);
+//  digitalWrite(trigPin, HIGH);
+//  delayMicroseconds(10);
+//  digitalWrite(trigPin, LOW);
+//  duration = pulseIn(echoPin, HIGH);
+//  distance = (duration/2) / 29.1;
+//  if (distance<4){
+//    return false;
+//  }
+//  return true;
 //}
-//void u(){
-//    motors.setLeftSpeed (speed);
-//  motors.setRightSpeed(speed - (speed *0.75));
-//}
-//void h(){
-//    motors.setLeftSpeed (-speed - (speed *0.75));
-//  motors.setRightSpeed(-speed);
-//}
-//void j(){
-//    motors.setLeftSpeed (-speed);
-//  motors.setRightSpeed(-speed - (speed * 0.75));
-//}
-
-
-bool checkForObstacle(){
-  long duration, distance;
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH);
-  distance = (duration/2) / 29.1;
-  if (distance<4){
-    return false;
-  }
-  return true;
-}
 
 void loop()
 {
@@ -142,56 +139,7 @@ void loop()
       //Serial.println("default");
       break;
   }
-  Serial.println(active);
-//  if (val == 'p') {
-//    //Start run
-//    
-//    Serial.println("Running");
-//    run();
-//  } else if (val == 'x') {
-//    Serial.println("Stopping");
-//    stop();
-//  }
   delay(100);
-//  Serial.println(j);
-//  j++;
-
-   
-//   if (checkForObstacle()) {
-//      switch (val) {
-//        default:
-//          forward();
-//          break;
-//        case 'd': 
-//          right();
-//          break;
-//        case 's': 
-//          back();
-//          break;
-//        case 'a':
-//          left();
-//          break;
-//        case 'w':
-//          forward();
-//          break;
-//        case 'y':
-//          y();
-//          break;
-//        case 'u':
-//          u();
-//          break;
-//      case 'h':h();
-//      break;
-//      case 'j':j();
-//      break;
-//      case 'z':stop();
-//      break;
-//      
-//    }
-//  }else{
-//    avoidObstacle();
-//  }
-//  delay(100);
 }
 
 void checkInput(char input) {
@@ -205,9 +153,7 @@ void checkInput(char input) {
 }
 
 void run(){
-    for (int i = 0; i < 6; i++) {
-      reflectanceSensors.readCalibrated(sensorArr);
-    }
+    reflectanceSensors.readCalibrated(sensorArr);
     forward();
     if (sensorArr[2] > threshold && sensorArr[3] > threshold){//wall has to go first or left gets hit first
       Serial.println("wall");
