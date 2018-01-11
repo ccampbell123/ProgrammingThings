@@ -6,7 +6,6 @@
 
 #define trigPin 2
 #define echoPin 3
-#define SENSOR_THRESHOLD 300
 
 ZumoBuzzer buzzer;
 ZumoReflectanceSensorArray reflectanceSensors;
@@ -16,7 +15,6 @@ Pushbutton button(ZUMO_BUTTON);
 const int speed = 100;
 int threshold = 300;
 int sensorArr[6];
-int j = 0;
 enum runType { automatic, manual, pause, initialisation}; 
 enum runType active = pause;
 
@@ -144,7 +142,7 @@ void manualMode() {
         right();
         break;
       case 'c':
-        active = pause;
+        active = automatic;
         break;
       case 'x':
         stop();
@@ -202,4 +200,3 @@ void stop(){
 //  }
 //  return true;
 //}
-
