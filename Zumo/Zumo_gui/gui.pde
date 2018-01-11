@@ -25,23 +25,38 @@ public void btnStop_click(GButton source, GEvent event) { //_CODE_:btnStop:80724
 } //_CODE_:btnStop:807242:
 
 public void btnW_click(GButton source, GEvent event) { //_CODE_:btnW:364075:
-  println("btnW - GButton >> GEvent." + event + " @ " + millis());
-  myPort.write('w');
+  if(source == btnW && event == GEvent.PRESSED) {
+    myPort.write('w'); 
+  } else if (source == btnW && event != GEvent.PRESSED) {
+    myPort.write('x');
+  }
+  //when the W button is initially pressed, it sends the forward command to the zumo,
+  //once any other event is executed, it sends an end of command function, telling the zumo that
+  // the command has stopped and it should stop.
 } //_CODE_:btnW:364075:
 
 public void btnA_click(GButton source, GEvent event) { //_CODE_:btnA:227525:
-  println("btnA - GButton >> GEvent." + event + " @ " + millis());
-  myPort.write('a');
+  if(source == btnA && event == GEvent.PRESSED) {
+    myPort.write('a'); 
+  } else if (source == btnA && event != GEvent.PRESSED) {
+    myPort.write('x');
+  }
 } //_CODE_:btnA:227525:
 
 public void btnS_click(GButton source, GEvent event) { //_CODE_:btnS:431688:
-  println("btnS - GButton >> GEvent." + event + " @ " + millis());
-  myPort.write('s');
+  if(source == btnS && event == GEvent.PRESSED) {
+    myPort.write('s'); 
+  } else if (source == btnS && event != GEvent.PRESSED) {
+    myPort.write('x');
+  }
 } //_CODE_:btnS:431688:
 
 public void btnD_click(GButton source, GEvent event) { //_CODE_:btnD:470462:
-  println("btnD - GButton >> GEvent." + event + " @ " + millis());
-  myPort.write('d');
+  if(source == btnD && event == GEvent.PRESSED) {
+    myPort.write('d'); 
+  } else if (source == btnD && event != GEvent.PRESSED) {
+    myPort.write('x');
+  }
 } //_CODE_:btnD:470462:
 
 public void btnComplete_click(GButton source, GEvent event) { //_CODE_:btnComplete:320450:
@@ -53,9 +68,10 @@ public void txtaComments_change(GTextArea source, GEvent event) { //_CODE_:txtaC
   println("txtaComments - GTextArea >> GEvent." + event + " @ " + millis());
 } //_CODE_:txtaComments:879480:
 
-public void btnCalibrate_click(GButton source, GEvent event) { //_CODE_:btnCalibrate:602138:
-  println("btnCalibrate - GButton >> GEvent." + event + " @ " + millis());
-} //_CODE_:btnCalibrate:602138:
+public void btnManual_click(GButton source, GEvent event) { //_CODE_:btnManual:602138:
+  println("btnmanual - GButton >> GEvent." + event + " @ " + millis());
+  myPort.write('m');
+} //_CODE_:btnManual:602138:
 
 synchronized public void win_draw1(PApplet appc, GWinData data) { //_CODE_:window1:790959:
   appc.background(230);
@@ -74,11 +90,11 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setCursor(ARROW);
   surface.setTitle("Sketch Window");
-  btnAutoStart = new GButton(this, 208, 16, 80, 32);
+  btnAutoStart = new GButton(this, 16, 16, 80, 32);
   btnAutoStart.setText("Auto Start");
   btnAutoStart.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   btnAutoStart.addEventHandler(this, "btnAutoStart_click");
-  btnStop = new GButton(this, 304, 16, 80, 30);
+  btnStop = new GButton(this, 112, 16, 80, 30);
   btnStop.setText("Stop");
   btnStop.setLocalColorScheme(GCScheme.RED_SCHEME);
   btnStop.addEventHandler(this, "btnStop_click");
@@ -98,7 +114,7 @@ public void createGUI(){
   btnD.setText("D");
   btnD.setTextBold();
   btnD.addEventHandler(this, "btnD_click");
-  btnComplete = new GButton(this, 112, 16, 80, 30);
+  btnComplete = new GButton(this, 304, 16, 80, 30);
   btnComplete.setText("Complete");
   btnComplete.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
   btnComplete.addEventHandler(this, "btnComplete_click");
@@ -106,9 +122,10 @@ public void createGUI(){
   txtaComments.setLocalColorScheme(GCScheme.GOLD_SCHEME);
   txtaComments.setOpaque(true);
   txtaComments.addEventHandler(this, "txtaComments_change");
-  btnCalibrate = new GButton(this, 16, 16, 80, 30);
-  btnCalibrate.setText("Calibrate");
-  btnCalibrate.addEventHandler(this, "btnCalibrate_click");
+  btnManual = new GButton(this, 208, 16, 80, 30);
+  btnManual.setText("Manual");
+  btnManual.setLocalColorScheme(GCScheme.CYAN_SCHEME);
+  btnManual.addEventHandler(this, "btnManual_click");
   window1 = GWindow.getWindow(this, "Window title", 0, 0, 240, 120, JAVA2D);
   window1.noLoop();
   window1.addDrawHandler(this, "win_draw1");
@@ -129,6 +146,6 @@ GButton btnS;
 GButton btnD; 
 GButton btnComplete; 
 GTextArea txtaComments; 
-GButton btnCalibrate; 
+GButton btnManual; 
 GWindow window1;
 GPanel panel1; 

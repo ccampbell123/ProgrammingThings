@@ -5,6 +5,7 @@ import processing.serial.*;
 Serial myPort;
 String portConst = "COM12";
 String inString;
+boolean initialised = false;
 
 public void setup(){
   size(480, 320, JAVA2D);
@@ -16,14 +17,12 @@ public void setup(){
 
 public void draw(){
   background(230);
-  boolean initialised = false;
   while(!initialised){
     initialised = true;
     myPort.write('@');
   }
-  
+  fireAllButtonEvents();
   if (myPort.available() > 0) {
-    
     inString = myPort.readStringUntil('\n');
   }
   if(inString != "") {
@@ -32,8 +31,13 @@ public void draw(){
   inString = "";
 }
 
-// Use this method to add additional statements
-// to customise the GUI controls
+private void fireAllButtonEvents() {
+  btnW.fireAllEvents(true);
+  btnA.fireAllEvents(true);
+  btnS.fireAllEvents(true);
+  btnD.fireAllEvents(true);
+}
+
 public void customGUI(){
   //btnAutoStart.setEnabled(false);
 }
