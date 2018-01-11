@@ -33,11 +33,18 @@ void setup()
 }
 
 void connectToGUI(){
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 36cd80f762da2a890e202e07191ebf45923f6aff
   while(!connected) {
     char input = Serial.read();
     if(input == '@') {
       connected = true;
+<<<<<<< HEAD
 //      active = initialisation;
+=======
+>>>>>>> 36cd80f762da2a890e202e07191ebf45923f6aff
     }
     delay(100);
   }
