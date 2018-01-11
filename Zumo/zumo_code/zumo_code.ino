@@ -6,7 +6,6 @@
 
 #define trigPin 2
 #define echoPin 3
-#define SENSOR_THRESHOLD 200
 
 ZumoBuzzer buzzer;
 ZumoReflectanceSensorArray reflectanceSensors;
@@ -16,7 +15,6 @@ Pushbutton button(ZUMO_BUTTON);
 const int speed = 100;
 int threshold = 300;
 int sensorArr[6];
-int j = 0;
 enum runType { automatic, manual, pause, initialisation}; 
 enum runType active = pause;
 
@@ -27,26 +25,20 @@ void setup()
   Serial.begin(9600);
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  //trouble connecting to gui now, method to check connection needed.
+  pinMode(13, OUTPUT);
   connectToGUI();
   calibrate();
 }
 
 void connectToGUI(){
-<<<<<<< HEAD
-=======
-  
->>>>>>> 36cd80f762da2a890e202e07191ebf45923f6aff
   while(!connected) {
     char input = Serial.read();
     if(input == '@') {
       connected = true;
-<<<<<<< HEAD
-//      active = initialisation;
-=======
->>>>>>> 36cd80f762da2a890e202e07191ebf45923f6aff
     }
+    digitalWrite(13, HIGH);
     delay(100);
+    digitalWrite(13, LOW);
   }
 }
 
@@ -55,8 +47,7 @@ void calibrate(){
   buzzer.play(">g32>>c32");
   reflectanceSensors.init();
   button.waitForButton();
-  Serial.println("Calibrating");
-  pinMode(13, OUTPUT);
+  Serial.println("Calibrating...");
   digitalWrite(13, HIGH);
   delay(1000);
   int i;
@@ -73,9 +64,93 @@ void calibrate(){
   motors.setSpeeds(0,0);
   digitalWrite(13, LOW);
   buzzer.play(">g32>>c32");
-  Serial.println("Calibrated");
+  Serial.println("Calibrated.");
+  Serial.println("Please place the Zumo in the starting position and ");
+  Serial.println("press the button on the Zumo when ready to start.");
   button.waitForButton();
   buzzer.play("L16 cdegreg4");
+}
+
+void loop()
+{
+  char input = Serial.read();
+  Serial.println(input);
+  checkInput(input);
+  switch(active){
+    case automatic:
+      Serial.println("automatic");
+      run();
+      break;
+    case manual:
+      Serial.println("manual");
+      manualMode();
+      break;
+    case pause:
+      Serial.println("pause");
+      stop();
+      break;
+    default:
+      Serial.println("default");
+      break;
+  }
+  delay(100);
+}
+
+void checkInput(char input) {
+  if (input == 'p') {
+    Serial.println("Running");
+    active = automatic;
+  } else if (input == 'x') {
+    Serial.println("Stopping");
+    active = pause;
+  } else if (input == 'm') {
+    Serial.println("Manual Mode");
+    active = manual;
+  }
+}
+
+void run() {
+    reflectanceSensors.readCalibrated(sensorArr);
+    forward();
+    if (sensorArr[2] > threshold && sensorArr[3] > threshold){//wall has to go first or left gets hit first
+      Serial.println("I Have hit a wall, entering manual mode for my next command.");
+      stop();
+      active = manual;
+    } else if (sensorArr[5] > threshold) {//right
+      Serial.println("Right");
+      left();
+    } else if (sensorArr[0] > threshold) {//left 
+      Serial.println("Left");
+      right();
+    }
+}
+
+void manualMode() {
+  while(active == manual){
+    char input = Serial.read();
+    switch(input){
+      case 'w':
+        forward();
+        break;
+      case 'a':
+        left();
+        break;
+      case 's':
+        back();
+        break;
+      case 'd':
+        right();
+        break;
+      case 'c':
+        active = automatic;
+        break;
+      case 'x':
+        stop();
+        break;
+      default:
+        break;
+    }
+  }
 }
 
 void forward() {
@@ -103,13 +178,13 @@ void stop(){
   motors.setRightSpeed(0);
 }
 
-void avoidObstacle(){
-  motors.setLeftSpeed(speed*2);
-  motors.setRightSpeed(-speed*2);
-  delay (2000);
-  motors.setLeftSpeed(0);
-  motors.setRightSpeed(0);
-}
+//void avoidObstacle(){
+//  motors.setLeftSpeed(speed*2);
+//  motors.setRightSpeed(-speed*2);
+//  delay (2000);
+//  motors.setLeftSpeed(0);
+//  motors.setRightSpeed(0);
+//}
 
 //bool checkForObstacle(){
 //  long duration, distance;
@@ -125,88 +200,3 @@ void avoidObstacle(){
 //  }
 //  return true;
 //}
-
-void loop()
-{
-  char input = Serial.read();
-  Serial.println(input);
-  checkInput(input);
-  switch(active){
-    case automatic:
-      Serial.println("automatic");
-      run();
-      break;
-    case manual:
-      Serial.println("manual");
-      manualMode();
-      break;
-    case pause:
-      Serial.println("pause");
-      stop();
-      break;
-//    case initialisation:
-//      Serial.println("initialise");
-//      break;
-    default:
-      Serial.println("default");
-      break;
-  }
-  delay(100);
-}
-
-void checkInput(char input) {
-  if (input == 'p') {
-    Serial.println("Running");
-    active = automatic;
-  } else if (input == 'x') {
-    Serial.println("Stopping");
-    active = pause;
-  } else if (input == 'm') {
-    Serial.println("Manual Mode");
-    active = manual;
-  }
-}
-
-void run(){
-    reflectanceSensors.readCalibrated(sensorArr);
-    forward();
-    if (sensorArr[2] > threshold && sensorArr[3] > threshold){//wall has to go first or left gets hit first
-      Serial.println("wall");
-      stop();
-    } else if (sensorArr[5] > threshold) {//right
-      Serial.println("Right");
-      left();
-    } else if (sensorArr[0] > threshold) {//left 
-      Serial.println("Left");
-      right();
-    }
-}
-
-void manualMode() {
-  while(active == manual){
-    char input = Serial.read();
-    switch(input){
-      case 'w':
-        forward();
-        break;
-      case 'a':
-        left();
-        break;
-      case 's':
-        back();
-        break;
-      case 'd':
-        right();
-        break;
-      case 'c':
-        active = pause;
-        break;
-      case 'x':
-        stop();
-        break;
-      default:
-        break;
-    }
-  }
-}
-
