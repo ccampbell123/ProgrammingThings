@@ -24,10 +24,15 @@ This was resolved by placing the wall detecting code first which uses the middle
 
 
 * [GUI Event Buttons](http://www.lagers.org.uk/g4p/ref/classg4p__controls_1_1_g_button.html)
+<<<<<<< HEAD
 
 Using this resource, i was able to change button clicks so that they worked on press instead of on click, which allows for a greater precision.
 
 ```
+=======
+Using this resource, i was able to change button clicks so that they worked on press instead of on click, which allows for a greater precision.
+'''
+>>>>>>> b9b42e8fed8ab66e4c103c2107ead20ddc805dd4
   if(source == btnW && event == GEvent.PRESSED) {
     myPort.write('w'); 
   } else if (source == btnW && event != GEvent.PRESSED) {
@@ -36,12 +41,21 @@ Using this resource, i was able to change button clicks so that they worked on p
   //when the W button is initially pressed, it sends the forward command to the zumo,
   //once any other event is executed, it sends an end of command function, telling the zumo that
   // the command has stopped and it should stop.
+<<<<<<< HEAD
 ```
+=======
+'''
+>>>>>>> b9b42e8fed8ab66e4c103c2107ead20ddc805dd4
 
 
 ## To Add
 
+<<<<<<< HEAD
 - corridor and room functionality
 - automated return
 
 - p, x, w, a, s, d, c, m, @, r, o
+=======
+-corridor and room functionality
+- automated return
+>>>>>>> b9b42e8fed8ab66e4c103c2107ead20ddc805dd4

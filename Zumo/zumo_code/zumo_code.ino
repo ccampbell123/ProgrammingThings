@@ -15,7 +15,11 @@ Pushbutton button(ZUMO_BUTTON);
 const int speed = 100;
 int threshold = 300;
 int sensorArr[6];
+<<<<<<< HEAD
 enum runType { automatic, manual, pause, room, corridor}; 
+=======
+enum runType { automatic, manual, pause, initialisation}; 
+>>>>>>> b9b42e8fed8ab66e4c103c2107ead20ddc805dd4
 enum runType active = pause;
 
 bool connected = false;
@@ -88,6 +92,7 @@ void loop()
       Serial.println("pause");
       stop();
       break;
+<<<<<<< HEAD
     case corridor:
       Serial.println("corridor");
       corridorMode();
@@ -100,6 +105,8 @@ void loop()
     //add case for room
     //room- detect left or right - manual turn - move forward - start scan left and right - detect objects - manual
     
+=======
+>>>>>>> b9b42e8fed8ab66e4c103c2107ead20ddc805dd4
     default:
       Serial.println("default");
       break;
@@ -197,6 +204,7 @@ void stop(){
   motors.setRightSpeed(0);
 }
 
+<<<<<<< HEAD
 void corridorMode() {
   while(active == corridor) {
     char input = Serial.read();
@@ -260,6 +268,8 @@ void scanRoom() {
 }
 //- manual turn - move forward - start scan left and right - detect objects - manual
 
+=======
+>>>>>>> b9b42e8fed8ab66e4c103c2107ead20ddc805dd4
 //void avoidObstacle(){
 //  motors.setLeftSpeed(speed*2);
 //  motors.setRightSpeed(-speed*2);
@@ -268,6 +278,7 @@ void scanRoom() {
 //  motors.setRightSpeed(0);
 //}
 
+<<<<<<< HEAD
 bool checkForObstacle(){
   long duration, distance;
   digitalWrite(trigPin, LOW);
@@ -283,3 +294,19 @@ bool checkForObstacle(){
   return true;
 }
 
+=======
+//bool checkForObstacle(){
+//  long duration, distance;
+//  digitalWrite(trigPin, LOW);
+//  delayMicroseconds(2);
+//  digitalWrite(trigPin, HIGH);
+//  delayMicroseconds(10);
+//  digitalWrite(trigPin, LOW);
+//  duration = pulseIn(echoPin, HIGH);
+//  distance = (duration/2) / 29.1;
+//  if (distance<4){
+//    return false;
+//  }
+//  return true;
+//}
+>>>>>>> b9b42e8fed8ab66e4c103c2107ead20ddc805dd4
