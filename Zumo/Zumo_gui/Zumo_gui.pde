@@ -12,7 +12,7 @@ public void setup(){
   createGUI();
   customGUI();
   printArray(Serial.list());
-  myPort = new Serial(this, Serial.list()[4], 9600);
+  myPort = new Serial(this, Serial.list()[1], 9600);
 }
 
 public void draw(){
@@ -39,6 +39,5 @@ private void fireAllButtonEvents() {
 }
 
 public void customGUI(){
-  //btnAutoStart.setEnabled(false);
+   window1.setVisible(false);
 }
-

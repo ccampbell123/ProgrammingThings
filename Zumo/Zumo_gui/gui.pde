@@ -73,6 +73,16 @@ public void btnManual_click(GButton source, GEvent event) { //_CODE_:btnManual:6
   myPort.write('m');
 } //_CODE_:btnManual:602138:
 
+public void btnRoom_click1(GButton source, GEvent event) { //_CODE_:btnRoom:432841:
+  println("btnRoom - GButton >> GEvent." + event + " @ " + millis());
+  myPort.write('r');
+} //_CODE_:btnRoom:432841:
+
+public void btnCorridor_click1(GButton source, GEvent event) { //_CODE_:btnCorridor:933502:
+  println("btnCorridor - GButton >> GEvent." + event + " @ " + millis());
+  myPort.write('o');
+} //_CODE_:btnCorridor:933502:
+
 synchronized public void win_draw1(PApplet appc, GWinData data) { //_CODE_:window1:790959:
   appc.background(230);
 } //_CODE_:window1:790959:
@@ -126,6 +136,14 @@ public void createGUI(){
   btnManual.setText("Manual");
   btnManual.setLocalColorScheme(GCScheme.CYAN_SCHEME);
   btnManual.addEventHandler(this, "btnManual_click");
+  btnRoom = new GButton(this, 336, 80, 80, 30);
+  btnRoom.setText("Room");
+  btnRoom.setLocalColorScheme(GCScheme.PURPLE_SCHEME);
+  btnRoom.addEventHandler(this, "btnRoom_click1");
+  btnCorridor = new GButton(this, 336, 128, 80, 30);
+  btnCorridor.setText("Corridor");
+  btnCorridor.setLocalColorScheme(GCScheme.PURPLE_SCHEME);
+  btnCorridor.addEventHandler(this, "btnCorridor_click1");
   window1 = GWindow.getWindow(this, "Window title", 0, 0, 240, 120, JAVA2D);
   window1.noLoop();
   window1.addDrawHandler(this, "win_draw1");
@@ -147,5 +165,7 @@ GButton btnD;
 GButton btnComplete; 
 GTextArea txtaComments; 
 GButton btnManual; 
+GButton btnRoom; 
+GButton btnCorridor; 
 GWindow window1;
 GPanel panel1; 
