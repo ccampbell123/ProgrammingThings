@@ -73,4 +73,4 @@ Overall, there were no main issues throughout this project, other than my own ti
 In reflection of coding the program, there would be several different methods that I would use in order to improve on functionality. This would include using the Clean Code methodology that I had learnt on my placement in order to keep the Zumo code ‘clean’ and readable. There are also areas where there are probably better methods that what I have used for the code that, with time, could be researched and incorporated within the program. 
 Another problem that I had faced during this task was this is the first time using GitHub, so in which I would either forget to push work that I had completed or not fully understand how it works and caused myself merging issues. These were not major issues at all as I always have a hard copy of all the work, and when the merge issues happened, the problems were fixed compared to the hard copy. Further research into GitHub could provide some better/automated methods for next time. 
 
-* [Zumo video link] (https://photos.app.goo.gl/irfCSrSjbbMdRN613) 
+* [Zumo video link] (https://photos.app.goo.gl/bZxPEnNRPh4ZSzoq1) 
